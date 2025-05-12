@@ -12,4 +12,8 @@ Code generation models have increasingly become integral to aiding software deve
 
 ```
 
+## Seed code
+[DS-1000](https://github.com/xlang-ai/DS-1000) 
+You can download the DS-1000 dataset from [huggingface](https://huggingface.co/datasets/xlangai/DS-1000).
+For the details of this dataset, you can see their [github page](https://github.com/xlang-ai/DS-1000)
 
