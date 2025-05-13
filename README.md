@@ -18,7 +18,7 @@ You could directly download the benchmark from ['DS_bench.json'](https://github.
 
 ## Benchmark Construction Pipeline
 
-Detailed code of benchmark construction can be found in the folder 'benchmark_construction'
+Detailed code of benchmark construction can be found in the folder `benchmark_construction`
 
 ## Results
 Our experiment results are stored in the folder `experiment_result`.
