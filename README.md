@@ -12,14 +12,13 @@ We believe DS-bench will serve as a rigorous and trustworthy foundation for adva
 ## :rocket: Updates
 **05/12/2025:** Code released
 
-## Installation
+## Benchmark
 
-```
+You could directly download the benchmark from ['DS_bench.json'](https://github.com/ShuyinOuyang/DS_bench/blob/main/DS_bench.json).
 
-```
+## Benchmark Construction Pipeline
 
-## Seed code
-[DS-1000](https://github.com/xlang-ai/DS-1000) 
-You can download the DS-1000 dataset from [huggingface](https://huggingface.co/datasets/xlangai/DS-1000).
-For the details of this dataset, you can see their [github page](https://github.com/xlang-ai/DS-1000)
+Detailed code of benchmark construction can be found in the folder 'benchmark_construction'
 
+## Results
+Our experiment results are stored in the folder `experiment_result`.
