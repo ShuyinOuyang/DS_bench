@@ -14,7 +14,8 @@ We believe DS-bench will serve as a rigorous and trustworthy foundation for adva
 
 ## Benchmark
 
-You could directly download the benchmark from ['DS_bench.json'](https://github.com/ShuyinOuyang/DS_bench/blob/main/DS_bench.json).
+You could directly download the benchmark from `DS_bench.json`.
+Besides, we also offer a 'cheated' version of our benchmark, with additional logic description of the ground truth code in the code problem description.
 
 ## Benchmark Construction Pipeline
 
