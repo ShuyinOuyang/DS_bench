@@ -23,10 +23,10 @@ Besides, we also offer a 'cheated' version of our benchmark `DS_bench_with_addit
 <img src="fig/distribution.png">
 
 
-## Benchmark Construction Pipeline
+## Benchmark Construction Pipeline & Evaluation
 
-Detailed code of benchmark construction can be found in the folder `benchmark_construction`
-
+A detailed code of benchmark construction and evaluation can be found in the `benchmark_construction` folder.
+We provide an additional [README.md](https://github.com/ShuyinOuyang/DS_bench/tree/main/benchmark_construction) file in the `benchmark_construction` folder.
 
 <img src="fig/overview.png">
 
