@@ -1,4 +1,4 @@
-# DS-bench: Code Generation Benchmark for Data Science Code
+# DS-Bench: A Realistic Benchmark for Data Science Code Generation
 
 ##  :round_pushpin: Abstract
 We introduce DS-bench, a new benchmark designed to evaluate large language models (LLMs) on complicated and realistic data science code generation tasks.
