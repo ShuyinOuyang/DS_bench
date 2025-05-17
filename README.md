@@ -42,4 +42,4 @@ Our experiment results are stored in the folder `experiment_result`.
 
 We warmly welcome feedback and contributions from the broader AI and Software Engineering research communities. Whether you'd like to open an issue or submit a pull request, please use the appropriate template to help us respond effectively. We look forward to your input and will follow up promptly!
 
-Contact person: [Shuyin Ouyang](https://sites.google.com/view/shuyinouyang) (Email: shuyin.ouyang@kcl.ac.uk)
+Contact person: [Shuyin Ouyang](https://sites.google.com/view/shuyinouyang)
