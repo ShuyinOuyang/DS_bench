@@ -18,7 +18,7 @@ We believe DS-bench will serve as a rigorous and trustworthy foundation for adva
 ## Benchmark
 
 You could directly download the benchmark from `DS_bench.json`.
-Besides, we also offer a 'cheated' version of our benchmark, with additional logic description of the ground truth code in the code problem description.
+Besides, we also offer a 'cheated' version of our benchmark `DS_bench_with_additional_logic.json`, with additional logic description of the ground truth code in the code problem description.
 
 <img src="fig/distribution.png">
 
