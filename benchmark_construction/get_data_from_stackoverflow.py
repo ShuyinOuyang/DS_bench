@@ -47,13 +47,11 @@ def get_post_comment(tag):
     return comments
 
 def get_detail_of_question_from_question_page(question_soup, detail):
-    # get the detail from question page
     question_related = question_soup.select('#question')[0]
     question_content = question_related.select('.s-prose,.js-post-body')[0].text.strip()
     question_comment = get_post_comment(question_related)
     answer_related = question_soup.select('#answers')[0]
     answers = []
-    # answers_cor_comment = {}
     a_count = 0
     for a in answer_related.contents:
         if type(a).__name__ == 'Tag':
@@ -62,7 +60,6 @@ def get_detail_of_question_from_question_page(question_soup, detail):
                 answer_comment = get_post_comment(a)
                 answer_score = a['data-score']
                 answer_class = a['class']
-                # print(answer_class)
                 if 'accepted-answer' in answer_class:
                     is_accepted = True
                 else:
@@ -78,15 +75,10 @@ def get_detail_of_question_from_question_page(question_soup, detail):
                     'answer_code_list': answer_code_list,
                     'is_accepted': is_accepted
                 })
-                # answers.append([answer_content, answer_score])
-                # answers_cor_comment[a_count] = answer_comment
-                # answers_useful_count = 0
                 a_count += 1
     detail['question_content'] = question_content
     detail['question_comment'] = question_comment
     detail['answers'] = answers
-    # detail['answers_cor_comment'] = answers_cor_comment
-    # detail['answers_useful_count'] = 0
     return detail
 
 
@@ -97,10 +89,7 @@ def get_detail_of_question_from_question_page(question_soup, detail):
 def extract_data_from_stackoverflow(keyword='seaborn', save=False):
     detail_list = []
     base_url = 'https://stackoverflow.com'
-    # 'https://stackoverflow.com/questions/tagged/matplotlib?tab=votes&page=2&pagesize=50'
     _url = 'https://stackoverflow.com/questions/tagged/{keyword}?page={page}&sort=votes&pagesize=50'
-    # urls = [_url.format(keyword=keyword, page=page) for page in range(1, 1001)]
-    # urls = [_url.format(keyword=keyword, page=page) for page in range(1, 3)]
     urls = [_url.format(keyword=keyword, page=page) for page in range(1, 10)]
 
     for url in urls:
@@ -121,5 +110,14 @@ def extract_data_from_stackoverflow(keyword='seaborn', save=False):
 
     # store the result
     if save:
+        if not os.path.exists('stackoverflow_new_data/'):
+            os.makedirs('stackoverflow_new_data/')
         with open('stackoverflow_new_data/%s.json' % keyword, 'w') as f:
             f.write(json.dumps(detail_list))
+
+
+if __name__ == '__main__':
+    library_list = ['seaborn', 'keras', 'lightgbm']
+    save = False
+    for library in library_list:
+        extract_data_from_stackoverflow(library, save)

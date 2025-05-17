@@ -321,72 +321,8 @@ def test_case_statistic():
     return test_case_dic
 
 
-
-
 def timeout_handler(signum, frame):
     raise TimeoutError("Execution timed out!")
-
-
-# below is the record of 3 trials
-# passed_list_0 = [2, 3, 7, 24, 46, 50, 69, 75, 76, 90, 92, 102, 117, 118, 125, 133, 135, 137, 140, 141, 142, 143, 146, 149, 162, 165, 168, 171, 174, 196, 206, 224, 255, 285, 291, 292, 298, 311, 313, 317, 324, 326, 331, 337, 341, 351, 363, 364, 365, 366, 367, 370, 372, 373, 374, 381, 382, 396, 400, 420, 423, 428, 461, 462, 475, 503, 525, 534, 537, 543, 544, 546, 550, 551, 552, 558, 566, 573, 593, 595, 605, 630, 631, 645, 652, 661, 676, 680, 687, 701, 707, 724, 750, 752, 759, 764]
-# passed_list_1 = [2, 3, 7, 24, 46, 50, 69, 75, 76, 86, 92, 102, 117, 118, 125, 133, 135, 137, 140, 141, 142, 143, 146, 149, 162, 165, 168, 171, 174, 196, 206, 224, 255, 285, 291, 292, 298, 311, 313, 317, 324, 326, 337, 341, 351, 363, 364, 365, 366, 367, 370, 372, 373, 374, 381, 382, 396, 400, 423, 428, 461, 462, 503, 525, 534, 537, 543, 544, 549, 550, 551, 552, 558, 566, 573, 593, 595, 605, 630, 631, 645, 652, 661, 676, 680, 686, 687, 701, 707, 724, 750, 752, 759, 764]
-# passed_list_2 = [2, 3, 7, 24, 46, 50, 69, 75, 76, 90, 92, 102, 117, 118, 133, 135, 137, 140, 141, 142, 143, 146, 149, 162, 165, 168, 171, 174, 196, 206, 224, 285, 291, 292, 298, 311, 313, 317, 324, 326, 337, 341, 351, 363, 364, 365, 366, 367, 370, 372, 373, 374, 381, 382, 392, 396, 400, 420, 423, 428, 461, 462, 475, 476, 503, 525, 534, 537, 543, 544, 546, 550, 551, 552, 558, 566, 573, 593, 595, 605, 630, 631, 645, 652, 661, 676, 680, 687, 701, 707, 724, 750, 752, 759, 764]
-# get the intersection of
-# intersection_list = sorted(list(set(passed_list_0).intersection(passed_list_1, passed_list_2)))
-
-def manual_check_selected_ground_truth_and_code_problem(library='numpy'):
-    # for the belowing list, the ground truth and code problems are ok
-    # without 396, 630
-    intersection_selected_problem_list = [2, 3, 7, 24, 46, 50, 69, 75, 76, 92, 102, 117, 118, 133, 135, 137, 140, 141,
-                                          142, 143, 146, 149, 162, 165, 168, 171, 174, 196, 206, 224, 285, 291, 292,
-                                          298, 311, 313, 317, 324, 326, 337, 341, 351, 363, 364, 365, 366, 367, 370,
-                                          372, 373, 374, 381, 382, 400, 423, 428, 461, 462, 503, 525, 534, 537, 543,
-                                          544, 550, 551, 552, 558, 566, 573, 593, 595, 605, 631, 645, 652, 661, 676,
-                                          680, 687, 701, 707, 724, 750, 752, 759, 764]
-
-    with open('new_dataset_candidate/%s/code_problem_description_generation.json' % (library), 'r') as f:
-        code_problem_list = json.load(f)
-
-    with open('new_dataset_candidate/%s_ground_truth_code_test_case.json' % (library), 'r') as f:
-        ground_truth_code_list = json.load(f)
-
-
-    selected_numpy_dic = {}
-    for idx in intersection_selected_problem_list:
-        # content = generated_code_list[idx]
-        test_case_code = ground_truth_code_list[idx]['test_case']['test_case_code']
-        valid_test_output_list = ground_truth_code_list[idx]['test_case']['valid_test_output_list']
-        # # generated_code = extract_code(content['response'])
-        ground_truth_code = ground_truth_code_list[idx]['ground_truth_code']
-        code_problem = extract_codeproblem(code_problem_list[idx]['response'])
-        # selected_numpy_list.append(ground_truth_code_list[idx]['test_case'])
-
-        print(idx)
-
-        with open('test/ground_truth_code.py', 'w') as f:
-            f.write(ground_truth_code)
-
-        with open('test/code_problem.md', 'w') as f:
-            f.write(code_problem)
-
-        a = input()
-
-        if a != '1':
-            with open('test/ground_truth_code.py', 'r') as f:
-                new_ground_truth_code = f.read()
-
-            with open('test/code_problem.md', 'r') as f:
-                new_code_problem = f.read()
-
-            selected_numpy_dic[idx] = {
-                'ground_truth_code': new_ground_truth_code,
-                'code_problem': new_code_problem,
-                'test_case_code': test_case_code,
-                'valid_test_output_list': valid_test_output_list
-            }
-        else:
-            continue
-
 
 # 1. get data from stackoverflow (get_data_from_stackoverflow.py)
 # 2. github code search (github_code_search.py)
@@ -970,7 +906,6 @@ def prepare_all_test_case(ds1000orstackoverflow='ds1000'):
             prepare_sample_test_case(ds1000orstackoverflow, library, i)
 
 
-
 # d. generate code problem description, based on ground truth code, test cases, and valid test case status
 def generate_code_problem_description(ds1000orstackoverflow='ds1000', library='numpy'):
 
@@ -1042,7 +977,6 @@ def generate_code_problem_description(ds1000orstackoverflow='ds1000', library='n
     with open(save_path, 'w') as f:
         f.write(json.dumps(res_list))
     return index_x_message_list, res_list
-
 
 
 # e. use code problem to generate code,
