@@ -20,12 +20,22 @@ We believe DS-bench will serve as a rigorous and trustworthy foundation for adva
 You could directly download the benchmark from `DS_bench.json`.
 Besides, we also offer a 'cheated' version of our benchmark, with additional logic description of the ground truth code in the code problem description.
 
+<img src="fig/distribution.png">
+
+
 ## Benchmark Construction Pipeline
 
 Detailed code of benchmark construction can be found in the folder `benchmark_construction`
 
+
+<img src="fig/overview.png">
+
+
 ## Results
 Our experiment results are stored in the folder `experiment_result`.
+
+
+<img src="fig/experiment_result.png">
 
 
 ## Contribution
