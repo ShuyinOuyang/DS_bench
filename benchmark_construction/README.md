@@ -13,8 +13,8 @@ You need to get a GitHub token like `token ghp_xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 ### OpenAI API
 
 Our benchmark construction code relies on LLM, especially the GPT series.
-Config your own openai info in file `personal_token/gpt_info.json`. 
-If you are still a free user of Openai model API, please config your account as pay-as-you-go before running the script, otherwise it's likely to reach the free trial limitation.
+Configure your own OpenAI info in file `personal_token/gpt_info.json`. 
+If you are still a free user of the OpenAI model API, please configure your account as pay-as-you-go before running the script, otherwise it's likely to reach the free trial limitation.
 
 ### experiment environment
 
@@ -34,6 +34,22 @@ pip install -r requirements.txt
 **DON'T upload your script with your GitHub token or openai.key to the public repository!!!!!!!!!!!**
 
 # Benchmark Construction
+
+## Code Task Scope Determination
+
+We choose NumPy, Pandas, SciPy, Scikit-learn, TensorFlow, PyTorch, Matplotlib, Seaborn, Keras, and LightGBM as our target libraries.
+
+## Ground Truth Code Construction
+
+### Collect Seed code
+
+In this step, we could run the script `get_data_from_stackoverflow.py` to collect the information from Stack Overflow.
+For the reference code in [DS-1000](https://github.com/xlang-ai/DS-1000), you can get the dataset from [here](https://huggingface.co/datasets/xlangai/DS-1000).
+
+**!!Update: if your code returns Response 403, you should configure your request with the header!!**
+
+
+### Sourcing code from GitHub
 
 
 
