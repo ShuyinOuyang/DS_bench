@@ -90,14 +90,36 @@ Third, we do the deduplication with the following command.
 python code_context_completion.py -f deduplication -s stackoverflow
 ```
 
-### Test Case Generation
+### Test Case Generation & Problem Description Generation
 
-
-
-
-### Problem Description Generation
-
+The main logic of test case generation and problem description generation is in the file `dataset_generation.py`.
+I need a bit of manual effort in some steps, so we recommend tuning the code based on the need.
+The main logic functions are listed in the "main" function.
 
 
 
 # Benchmark Evaluation
+
+### Generate Solution
+
+We use the following command to generate solutions for DS-bench and DS-1000:
+
+```sh
+python LLM_generate_solution.py -b ds_bench
+```
+
+
+### Run Test
+
+For DS-bench, we use the following script to run the evaluation.
+
+```sh
+bash run.sh "$model" "$input_file"
+```
+
+For DS-1000, we use the following script to run the evaluation.
+
+```sh
+bash run_ds1000.sh "$model" "$input_file"
+```
+
