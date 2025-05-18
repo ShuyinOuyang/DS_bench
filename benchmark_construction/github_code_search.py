@@ -1,3 +1,4 @@
+import argparse
 import gzip
 import json
 import os.path
@@ -49,7 +50,6 @@ def make_soup(url, headers=None):
     return None
 
 # use reference code as query to search in the github
-
 def split_reference_code(code):
     final_list = []
     code_line_list = code.split('\n')
@@ -110,11 +110,9 @@ def check_rate_limit(headers=None):
 
 def crawl_data_from_github_based_on_ds1000():
     # load ds1000 dataset
-    ds1000 = [json.loads(l) for l in gzip.open("dataset/ds1000_new.jsonl.gz", "rt").readlines()]
+    ds1000 = [json.loads(l) for l in gzip.open("ds1000.jsonl.gz", "rt").readlines()]
 
-    # github_base_url = 'https://github.com/search?'
     github_api_base_url = 'https://api.github.com/search/code?'
-    # url = f'https://api.github.com/search/code?q={query}'
 
     with open('personal_token/github_token.json', 'r') as f:
         headers = json.load(f)
@@ -243,5 +241,15 @@ def crawl_data_from_github_based_on_stackoverflow(library='seaborn', user_id=0):
 
 
 if __name__ == '__main__':
-    # pandas, tensorflow, scipy, sklearn, torch (pytorch), keras, lightgbm, seaborn
-    crawl_data_from_github_based_on_ds1000('')
+    parser = argparse.ArgumentParser()
+    parser.add_argument("-l", "--library", type=str, choices=[''])
+    parser.add_argument("-s", "--source", type=str,  choices=[''], required=True)
+    args = parser.parse_args()
+
+    if args.source == 'ds1000':
+        crawl_data_from_github_based_on_ds1000()
+    elif args.source == 'stackoverflow':
+        if args.library == 'pytorch':
+            crawl_data_from_github_based_on_stackoverflow('torch')
+        else:
+            crawl_data_from_github_based_on_stackoverflow(args.library)
