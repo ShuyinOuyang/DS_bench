@@ -242,7 +242,8 @@ def crawl_data_from_github_based_on_stackoverflow(library='seaborn', user_id=0):
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser()
-    parser.add_argument("-l", "--library", type=str, choices=[''])
+    parser.add_argument("-l", "--library", type=str, choices=['numpy', 'pandas', 'matplotlib', 'scipy', 'sklearn',
+                 'tensorflow', 'pytorch', 'seaborn', 'keras', 'lightgbm'])
     parser.add_argument("-s", "--source", type=str,  choices=[''], required=True)
     args = parser.parse_args()
 

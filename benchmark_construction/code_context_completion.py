@@ -118,8 +118,6 @@ def walk_with_path(node, path=None):
         yield from walk_with_path(child, path + [node])
 
 def get_ast_context(ast_code_function, ast_code, original_ast_function_name):
-    # code_function is a part of code
-    # def complete_code_function():
 
     astCall_inCodeSnippet = []
     astAttribute_inCodeSnippet = []
@@ -165,7 +163,7 @@ def get_ast_context(ast_code_function, ast_code, original_ast_function_name):
 
     print('Collect not builtin functions.', flush=True)
 
-    # for each not builtin function, we find the functionDef in side the whole code file
+    # for each not builtin function, we find the functionDef inside the whole code file
     for node, path in walk_with_path(ast_code):
         if isinstance(node, ast.FunctionDef):
             # all the function call is from outside
@@ -369,17 +367,6 @@ def modify_args_astFunctionDef(ast_node, inCodeFile_dic):
 
     return modified_tree
 
-    # add new args
-    # args_name_list = []
-    # for _arg in astFunctionDef.args.args:
-    #     args_name_list.append(_arg.arg)
-    #
-    # for _attribute in not_builtin_attribute_list:
-    #     if _attribute[1].attr not in args_name_list:
-    #         new_arg = ast.arg(arg=_attribute[1].attr)
-    #         astFunctionDef.args.args.append(new_arg)
-    #         args_name_list.append(_attribute[1].attr)
-
 
 
 def remove_self(ast_object, inCodeFile_dic):
@@ -472,12 +459,6 @@ async def run_script_pylint(target_file, i, total_length, destination_folder, se
 
         except asyncio.TimeoutError:
             pass
-            # res = {
-            #     'target_file': target_file,
-            #     'returncode': -1,
-            #     'stdout': '',
-            #     'stderr': 'Process timed out'
-            # }
         return
         # return res
 
@@ -490,22 +471,6 @@ async def compile_ground_truth_code_pylint(target_file_list, destination_folder,
     total_length = len(target_file_list)
     tasks = [run_script_pylint(file, i, total_length, destination_folder, semaphore) for i, file in enumerate(target_file_list)]
     await asyncio.gather(*tasks)
-
-    # copy_tasks = []
-    # for res in tqdm(res_list):
-    #     pylint_result = res['stdout'].split('\n')
-    #     pylint_check_flag = True
-    #     for line in tqdm(pylint_result):
-    #         tmp_list = line.split(':')
-    #         if len(tmp_list) >= 4:
-    #             msg_id = tmp_list[3].strip()
-    #             if msg_id.startswith('E') or msg_id.startswith('F'):
-    #                 pylint_check_flag = False
-    #                 break
-    #     if pylint_check_flag:
-    #         copy_tasks.append(async_copy_file_pylint(res['target_file'], destination_folder, semaphore))
-    #
-    # await asyncio.gather(*copy_tasks)
 
 
 
@@ -630,272 +595,38 @@ def deduplication(ds1000orstackoverflow='ds1000'):
         shutil.copy(tmp_dic[key], destination_folder)
 
 
-# Pandas 0-290
-# Numpy 291-510
-# Matplotlib 511-665
-# Tensorflow 666-710
-# Scipy 711-816
-# Sklearn 817-931
-# Pytorch 932-999
+if __name__ == '__main__':
+    parser = argparse.ArgumentParser()
+    parser.add_argument(
+        "-f",
+        "--function",
+        type=str,
+        choices=['generate_ground_truth_code', 'compilation_filter', 'deduplication'],
+        help="Choose script function",
+        required=True,
+    )
+    parser.add_argument(
+        "-s",
+        "--source",
+        type=str,
+        choices=['ds1000', 'stackoverflow'],
+        help="Choose seed code source",
+        required=True,
+    )
+    parser.add_argument(
+        "-l",
+        "--library",
+        type=str,
+        choices=['numpy', 'pandas', 'matplotlib', 'scipy', 'sklearn',
+                 'tensorflow', 'pytorch', 'seaborn', 'keras', 'lightgbm'],
+        help="Choose library",
+        default='numpy'
+    )
 
-
-#### result analysis=============================================================
-def load_ground_truth_dic():
-    folder_path = 'ground_truth_code_filtered_deduplicated/'
-    # folder_path = 'ground_truth_code/'
-
-    ground_truth_code_dic = {
-        'pandas': [],
-        'numpy': [],
-        'matplotlib': [],
-        'tensorflow': [],
-        'scipy': [],
-        'sklearn': [],
-        'pytorch': []
-    }
-    for file_name in os.listdir(folder_path):
-        target_file = os.path.join(folder_path, file_name)
-        # print(target_file)
-        try:
-            if int(file_name.split('_')[0]) <= 290:
-                ground_truth_code_dic['pandas'].append(target_file)
-            elif int(file_name.split('_')[0]) <= 510:
-                ground_truth_code_dic['numpy'].append(target_file)
-            elif int(file_name.split('_')[0]) <= 665:
-                ground_truth_code_dic['matplotlib'].append(target_file)
-            elif int(file_name.split('_')[0]) <= 710:
-                ground_truth_code_dic['tensorflow'].append(target_file)
-            elif int(file_name.split('_')[0]) <= 816:
-                ground_truth_code_dic['scipy'].append(target_file)
-            elif int(file_name.split('_')[0]) <= 931:
-                ground_truth_code_dic['sklearn'].append(target_file)
-            else:
-                ground_truth_code_dic['pytorch'].append(target_file)
-        except:
-            continue
-        # ground_truth_code_list.append(target_file)
-    return ground_truth_code_dic
-
-def ground_truth_statistics(option='pandas'):
-    ground_truth_code_dic = load_ground_truth_dic()
-    code_line = 0
-    code_word = 0
-    file_count = 0
-    if option == 'all':
-        for library_name in ground_truth_code_dic:
-            for file_name in ground_truth_code_dic[library_name]:
-                with open(file_name, 'r') as f:
-                    for line in f:
-                        code_line += 1
-                        words = line.split()
-                        code_word += len(words)
-                file_count += 1
-    else:
-        for file_name in ground_truth_code_dic[option]:
-            with open(file_name, 'r') as f:
-                for line in f:
-                    code_line += 1
-                    words = line.split()
-                    code_word += len(words)
-            file_count += 1
-    print('%s\t%s\t%s\t%s' % (option, file_count, round(code_line/file_count, 2), round(code_word/file_count, 2)))
-
-def makeup_tensorflow():
-    folder_path = 'ground_truth_code/'
-    tensorflow_list = []
-
-    for file_name in os.listdir(folder_path):
-        target_file = os.path.join(folder_path, file_name)
-        # print(target_file)
-        if int(file_name.split('_')[0]) > 816 and int(file_name.split('_')[0]) <= 931:
-            tensorflow_list.append(target_file)
-
-    folder_path = 'ground_truth_code_filtered/'
-    tmp_filtered_list = []
-    for file_name in os.listdir(folder_path):
-        target_file = os.path.join(folder_path, file_name)
-        # print(target_file)
-        if int(file_name.split('_')[0]) > 816 and int(file_name.split('_')[0]) <= 931:
-            tmp_filtered_list.append(file_name)
-
-    unselected_tmp_list = []
-    for x in tensorflow_list:
-        if x.split('/')[-1] not in tmp_filtered_list:
-            unselected_tmp_list.append(x)
-
-    unselected_tensorflow_list = sorted(unselected_tmp_list)
-    a = load_ground_truth_dic()
-    # for file_name in unselected_tensorflow_list:
-    #     # file_name = unselected_tensorflow_list[3]
-    #     print(file_name)
-    #     with open(file_name, 'r') as f:
-    #         code = f.read()
-    #     with open('filter_code_demo_2.py', 'w') as f:
-    #         f.write(code)
-    #     output = subprocess.run(["python", 'filter_code_demo_2.py'], capture_output=True, text=True)
-    #     if output.returncode == 0:
-    #         with open('filter_code_demo_2.py', 'r') as f:
-    #             new_code = f.read()
-    #         with open(file_name.replace('ground_truth_code', 'ground_truth_code_filtered'), 'w') as f:
-    #             f.write(new_code)
-
-def demo_script():
-    store_file_path = 'ground_truth_manual_filter.txt'
-    ground_truth_manual_filter_dic = {}
-    tmp_list = os.listdir('ground_truth_code_filtered_deduplicated')
-    if os.path.exists(store_file_path):
-        with open(store_file_path, 'r', encoding='utf-8') as f:
-            for line in f.readlines():
-                # count += 1
-                # print(count)
-                content = json.loads(line)
-                if content[0].split('/')[-1] in tmp_list:
-                    if len(content) == 2:
-                        ground_truth_manual_filter_dic[content[0].replace('ground_truth_code_filtered', 'ground_truth_code_filtered_deduplicated')] = [content[1]]
-                    else:
-                        ground_truth_manual_filter_dic[content[0].replace('ground_truth_code_filtered', 'ground_truth_code_filtered_deduplicated')] = [content[1], content[2]]
-            # ground_truth_manual_filter_dic = json.load(f)
-    else:
-        ground_truth_manual_filter_dic = {}
-
-    for key in ground_truth_manual_filter_dic:
-        with open('ground_truth_manual_filter_new.txt', 'a') as f:
-            if len(ground_truth_manual_filter_dic[key]) == 1:
-                f.write(json.dumps([key, ground_truth_manual_filter_dic[key][0]]) + '\n')
-            else:
-                f.write(json.dumps(
-                    [key, ground_truth_manual_filter_dic[key][0], ground_truth_manual_filter_dic[key][1]]) + '\n')
-
-
-# pandas
-def manual_filter():
-    # filter the ground truth by hand
-    count = 0
-    store_file_path = 'ground_truth_manual_filter.txt'
-    ground_truth_manual_filter_dic = {}
-    if os.path.exists(store_file_path):
-        with open(store_file_path, 'r', encoding='utf-8') as f:
-            for line in f.readlines():
-                count += 1
-                print(count)
-                content = json.loads(line)
-                ground_truth_manual_filter_dic[content[0]] = content[1]
-            # ground_truth_manual_filter_dic = json.load(f)
-    else:
-        ground_truth_manual_filter_dic = {}
-
-    folder_path = 'ground_truth_code_filtered_deduplicated/'
-
-    for file_name in sorted(os.listdir(folder_path), key=lambda x: int(x.split('/')[-1].split('_')[0])):
-        target_file = os.path.join(folder_path, file_name)
-        print(target_file)
-        if target_file not in ground_truth_manual_filter_dic:
-            with open(target_file, 'r') as f:
-                code = f.read()
-
-            with open('filter_code_demo.py', 'w') as f:
-                f.write(code)
-
-            a_input = input()
-            with open('filter_code_demo.py', 'r') as f:
-                new_code = f.read()
-            if a_input == '1':
-                tmp_var = [target_file, True, new_code]
-            else:
-                tmp_var = [target_file, False]
-
-            with open(store_file_path, 'a') as f:
-                f.write(json.dumps(tmp_var) + '\n')
-
-# ================================================================================
-
-## example trail code
-def example():
-    # code, code_function, code_function_type = example_1()
-    # ds1000_id, i, j = 291, 10, 3
-    ds1000_id, i, j = 919, 2, 1
-    file_path = os.path.join('github_search_result_filtered', '%s.json' % (ds1000_id))
-    with open(file_path, 'r') as f:
-            res = json.load(f)
-    code = res['filtered_similar_code'][i]['code']
-    code_function, code_function_type = res['filtered_similar_code'][i]['code_snippet_list'][j]
-    try:
-        ast_code = ast.parse(code)
-    except:
-        print('Code file failed to be parsed into AST.')
-
-    try:
-        ast_code_function = ast.parse(code_function)
-    except:
-        print('Code function failed to be parsed into AST.')
-
-    original_ast_function_name = ast_code_function.body[0].name
-    ast_context_id_list = []
-
-    res_dic = get_ast_context(ast_code_function, ast_code, original_ast_function_name)
-
-    tmp_context = res_dic['ast_context']
-
-    context_id = 0
-    while tmp_context:
-        print('Get the context...(%s)' % (context_id), flush=True)
-        tmp_context_list = [x[0] for x in ast_context_id_list]
-        for x in tmp_context:
-            if x in tmp_context_list:
-                tmp_context.remove(x)
-            else:
-                ast_context_id_list.append([x, context_id])
-        refined_ast_context = ast.parse(ast.unparse(tmp_context))
-        tmp_res_dic = get_ast_context(refined_ast_context, ast_code, original_ast_function_name)
-        tmp_context = tmp_res_dic['ast_context']
-        context_id += 1
-        if context_id > 10:
-            break
-
-    inCodeFile_dic = {
-        'astImport_inCodeFile': res_dic['astImport_inCodeFile'],
-        'astAssign_inCodeFile': res_dic['astAssign_inCodeFile'],
-        'astFunctionDef_inCodeFile': res_dic['astFunctionDef_inCodeFile']
-    }
-
-    # if code_function_type == 'class_method':
-        # ast_code_function = remove_self(ast_code_function, not_builtin_attribute_list)
-    ast_code_function = remove_self(ast_code_function, inCodeFile_dic)
-    ground_truth_code = combine_context_with_code(ast_context_id_list, ast_code_function, inCodeFile_dic)
-
-
-    with open('filter_code_demo_2.py', 'w') as f:
-        f.write(ground_truth_code)
-
-
-# generate_ground_truth_code('s')
-deduplication('s')
-# if __name__ == '__main__':
-#     # compilation_filter('stackoverflow', 'keras')
-#     parser = argparse.ArgumentParser()
-#     parser.add_argument(
-#         "-l",
-#         "--library",
-#         type=str,
-#         choices=['numpy', 'pandas', 'matplotlib', 'scipy', 'sklearn',
-#                  'tensorflow', 'pytorch', 'seaborn', 'keras', 'lightgbm', 'all'],
-#         help="Choose library",
-#         required=True,
-#     )
-#     args = parser.parse_args()
-#     compilation_filter('stackoverflow', args.library)
-
-
-
-# base_folder = 'intermediate_search_result/stackoverflow_search/'
-# destination_folder = base_folder + 'ground_truth_code_filtered/'
-# folder_path = base_folder + 'ground_truth_code/'
-# library = 'keras'
-# target_file_list = []
-# for file_name in tqdm(os.listdir(folder_path)):
-#     target_file = os.path.join(folder_path, file_name)
-#     if library not in file_name:
-#         continue
-#     if os.path.exists(target_file.replace('ground_truth_code', 'ground_truth_code_filtered')):
-#         continue
-#     target_file_list.append(target_file)
+    args = parser.parse_args()
+    if args.function == 'generate_ground_truth_code':
+        generate_ground_truth_code(args.source)
+    elif args.function == 'compilation_filter':
+        compilation_filter(args.source, args.library)
+    elif args.function == 'deduplication':
+        deduplication(args.source)

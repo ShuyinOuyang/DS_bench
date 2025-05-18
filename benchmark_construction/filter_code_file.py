@@ -272,7 +272,7 @@ def filtering():
 def filtering_wo_date_filtering(library, ds1000_or_stackoverflow='ds1000'):
 
     if ds1000_or_stackoverflow == 'ds1000':
-        ds1000 = [json.loads(l) for l in gzip.open("dataset/ds1000_new.jsonl.gz", "rt").readlines()]
+        ds1000 = [json.loads(l) for l in gzip.open("ds1000.jsonl.gz", "rt").readlines()]
 
         base_folder = 'intermediate_search_result/DS1000_search/'
         initial_folder = base_folder + 'github_search_result_initial/'
@@ -403,19 +403,25 @@ def filtering_wo_date_filtering(library, ds1000_or_stackoverflow='ds1000'):
                 f.write(json.dumps(new_res))
 
 
-# TODO: think the way to run the code (create/ask other to run)
-
 if __name__ == '__main__':
-    filtering_wo_date_filtering('scipy', ds1000_or_stackoverflow='stackoverflow')
-    # parser = argparse.ArgumentParser()
-    # parser.add_argument(
-    #     "-l",
-    #     "--library",
-    #     type=str,
-    #     choices=['numpy', 'pandas', 'matplotlib', 'scipy', 'sklearn',
-    #              'tensorflow', 'pytorch', 'seaborn', 'keras', 'lightgbm', 'all'],
-    #     help="Choose library",
-    #     required=True,
-    # )
-    # args = parser.parse_args()
-    # filtering_wo_date_filtering(args.library, ds1000_or_stackoverflow='stackoverflow')
+    # filtering_wo_date_filtering('scipy', ds1000_or_stackoverflow='stackoverflow')
+    parser = argparse.ArgumentParser()
+    parser.add_argument(
+        "-l",
+        "--library",
+        type=str,
+        choices=['numpy', 'pandas', 'matplotlib', 'scipy', 'sklearn',
+                 'tensorflow', 'pytorch', 'seaborn', 'keras', 'lightgbm', 'all'],
+        help="Choose library",
+        required=True,
+    )
+    parser.add_argument(
+        "-s",
+        "--source",
+        type=str,
+        choices=['ds1000', 'stackoverflow'],
+        help="Choose library",
+        required=True,
+    )
+    args = parser.parse_args()
+    filtering_wo_date_filtering(args.library, ds1000_or_stackoverflow=args.source)
