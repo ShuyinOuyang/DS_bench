@@ -32,7 +32,7 @@ We provide an additional README.md file in the `benchmark_construction_evaluatio
 
 
 ## Results
-Our experiment results are stored in the folder `experiment_result`.
+Our experiment results are stored in the folder `experiment_results`.
 
 
 <img src="fig/experiment_result.png">
