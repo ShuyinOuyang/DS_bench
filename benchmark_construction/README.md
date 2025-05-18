@@ -16,7 +16,7 @@ Our benchmark construction code relies on LLM, especially the GPT series.
 Configure your own OpenAI info in file `personal_token/gpt_info.json`. 
 If you are still a free user of the OpenAI model API, please configure your account as pay-as-you-go before running the script, otherwise it's likely to reach the free trial limitation.
 
-### experiment environment
+### experiment environment (for evaluation only)
 
 Please use the following command to create a Conda environment from the `environment.yml`.
 
@@ -43,13 +43,60 @@ We choose NumPy, Pandas, SciPy, Scikit-learn, TensorFlow, PyTorch, Matplotlib, S
 
 ### Collect Seed code
 
-In this step, we could run the script `get_data_from_stackoverflow.py` to collect the information from Stack Overflow.
+In this step, you could run the script `get_data_from_stackoverflow.py` to collect the information from Stack Overflow.
 For the reference code in [DS-1000](https://github.com/xlang-ai/DS-1000), you can get the dataset from [here](https://huggingface.co/datasets/xlangai/DS-1000).
 
 **!!Update: if your code returns Response 403, you should configure your request with the header!!**
 
 
 ### Sourcing code from GitHub
+
+In this step, we run the following script to get the initial search result from GitHub.
+
+
+```sh
+python github_code_search.py -l torch -s stackoverflow
+```
+
+-l (--library): choose library (only if args.source=='stackoverflow')
+-s (--source): choose seed code source ('ds1000' or 'stackoverflow')
+
+### Code filtering (part of it)
+
+In this step, we filter the code with the following script.
+
+```sh
+python filter_code_file.py -l torch -s stackoverflow
+```
+
+### Context reconstruction (+ the rest of the code filtering)
+
+In this step, we reconstruct the code with its context in the repository (for file-level, especially).
+First, we do the context completion by using the following command.
+
+```sh
+python code_context_completion.py -f generate_ground_truth_code -s stackoverflow
+```
+
+Second, we do the compilation filtering with the following command.
+
+```sh
+python code_context_completion.py -f compilation_filter -s stackoverflow -l numpy
+```
+
+Third, we do the deduplication with the following command.
+
+```sh
+python code_context_completion.py -f deduplication -s stackoverflow
+```
+
+### Test Case Generation
+
+
+
+
+### Problem Description Generation
+
 
 
 
