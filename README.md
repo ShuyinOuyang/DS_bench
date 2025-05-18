@@ -26,7 +26,7 @@ Besides, we also offer a 'cheated' version of our benchmark `DS_bench_with_addit
 ## Benchmark Construction Pipeline & Evaluation
 
 A detailed [code](https://github.com/ShuyinOuyang/DS_bench/tree/main/benchmark_construction)  of benchmark construction and evaluation can be found in the `benchmark_construction` folder.
-We provide an additional README.md file in the `benchmark_construction` folder.
+We provide an additional README.md file in the `benchmark_construction_evaluation` folder.
 
 <img src="fig/overview.png">
 
