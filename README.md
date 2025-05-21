@@ -33,7 +33,7 @@ Besides, we also offer a 'cheated' version of our benchmark `DS_bench_with_addit
   <img src="fig/distribution.png">
 </p>
 
-## Benchmark Construction Pipeline & Evaluation
+## 🚀 Benchmark Construction Pipeline & Evaluation
 
 A detailed [code](https://github.com/ShuyinOuyang/DS_bench/tree/main/benchmark_construction_evaluation)  of benchmark construction and evaluation can be found in the `benchmark_construction_evaluation` folder.
 We provide an additional README.md file in the `benchmark_construction_evaluation` folder.
@@ -42,14 +42,14 @@ We provide an additional README.md file in the `benchmark_construction_evaluatio
   <img src="fig/overview.png">
 </p>
 
-## Results
+## 📍 Results
 Our experiment results are stored in the folder `experiment_results`.
 
 <p align="center">
   <img src="fig/experiment_result.png">
 </p>
 
-## Contribution
+## 💫 Contributions
 
 We warmly welcome feedback and contributions from the broader AI and Software Engineering research communities. Whether you'd like to open an issue or submit a pull request, please use the appropriate template to help us respond effectively. We look forward to your input and will follow up promptly!
 
