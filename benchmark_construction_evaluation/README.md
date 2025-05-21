@@ -58,9 +58,6 @@ In this step, we run the following script to get the initial search result from 
 python github_code_search.py -l torch -s stackoverflow
 ```
 
--l (--library): choose library (only if args.source=='stackoverflow')
--s (--source): choose seed code source ('ds1000' or 'stackoverflow')
-
 ### Code filtering (part of it)
 
 In this step, we filter the code with the following script.
